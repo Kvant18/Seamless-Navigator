@@ -39,9 +39,6 @@ android {
             val yourKey: String = p.getProperty("MAPKIT_API_KEY")
             buildConfigField("String", "MAPKIT_API_KEY", "\"$yourKey\"")
         }
-        release {
-
-        }
     }
 
     buildFeatures {
@@ -69,5 +66,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.code.scanner)
 }
 

@@ -1,5 +1,6 @@
 [versions]
 agp = "8.6.1"
+codeScanner = "2.3.0"
 composeBom = "2024.09.02"
 appcompat = "1.7.0"
 mapsMobile = "4.8.0-full"
@@ -18,6 +19,7 @@ androidx-ui = { module = "androidx.compose.ui:ui" }
 androidx-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+code-scanner = { module = "com.github.yuriy-budiyev:code-scanner", version.ref = "codeScanner" }
 maps-mobile = { module = "com.yandex.android:maps.mobile", version.ref = "mapsMobile" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }

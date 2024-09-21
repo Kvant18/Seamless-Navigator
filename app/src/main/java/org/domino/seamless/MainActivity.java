@@ -1,7 +1,5 @@
 package org.domino.seamless;
 
-import static org.domino.seamless.Constants.PERMISSIONS_REQUEST_FINE_LOCATION;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -39,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         MapKitFactory.initialize(this);
         requestLocationPermission();
-
+        requestCameraPermission();
 
         replaceFragment(new HomeFragment());
 
@@ -68,12 +66,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                "android.permission.ACCESS_FINE_LOCATION")
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{"android.permission.ACCESS_FINE_LOCATION"},
-                    PERMISSIONS_REQUEST_FINE_LOCATION);
+        final int code =ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION");
+        if (code != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{"android.permission.ACCESS_FINE_LOCATION"}, 1);
+        }
+    }
+
+    private void requestCameraPermission() {
+        final int code = ContextCompat.checkSelfPermission(this, "android.permission.CAMERA");
+        if (code != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{"android.permission.CAMERA"}, 100);
         }
     }
 
