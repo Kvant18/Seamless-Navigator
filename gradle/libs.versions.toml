@@ -1,0 +1,30 @@
+[versions]
+agp = "8.6.1"
+composeBom = "2024.09.02"
+appcompat = "1.7.0"
+mapsMobile = "4.8.0-full"
+material = "1.12.0"
+activity = "1.9.2"
+constraintlayout = "2.1.4"
+material3 = "latest"
+playServicesLocation = "21.3.0"
+preference = "1.2.1"
+
+[libraries]
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+androidx-preference = { module = "androidx.preference:preference", version.ref = "preference" }
+androidx-ui = { module = "androidx.compose.ui:ui" }
+androidx-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+maps-mobile = { module = "com.yandex.android:maps.mobile", version.ref = "mapsMobile" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+

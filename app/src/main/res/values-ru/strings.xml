@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Бесшовный навигатор</string>
+    <string name="Home">Дом</string>
+    <string name="Settings">Настройки</string>
+    <string name="Search">Поиск</string>
+    <string name="SearchHint">Поиск места</string>
+    <string name="Camera">Камера</string>
+    <string name="not_found_error_message">Не найдено</string>
+    <string name="network_error_message">Ошибка сети</string>
+    <string name="remote_error_message">Ошибка удаленного сервера</string>
+    <string name="unknown_error_message">Неизвестная ошибка</string>
+    <string name="Language">Язык</string>
+    <string name="Theme">Тема</string>
+    <string name="ThemeSummery">Включение темной темы оформления</string>
+    <string name="Russian">Русский</string>
+    <string name="English">Английский</string>
+    <string name="follow_system">Как в системе</string>
+    <string name="always_dark">Всегда темная</string>
+    <string name="always_light">Всегда светлая</string>
+</resources>

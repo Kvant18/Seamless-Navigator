@@ -1,0 +1,23 @@
+<resources>
+    <string-array name="language_entries">
+        <item>@string/Russian</item>
+        <item>@string/English</item>
+    </string-array>
+
+    <string-array name="language_values">
+        <item>ru</item>
+        <item>en</item>
+    </string-array>
+
+    <string-array name="theme_entries">
+        <item>@string/follow_system</item>
+        <item>@string/always_dark</item>
+        <item>@string/always_light</item>
+    </string-array>
+
+    <string-array name="theme_values">
+        <item>dfdf</item>
+        <item>dfdf</item>
+        <item>dfdf</item>
+    </string-array>
+</resources>
