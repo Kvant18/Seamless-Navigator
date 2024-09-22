@@ -6,22 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.CameraFragment">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_back_camera"
-        android:layout_gravity="start"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/back"
-        app:fabSize="mini"
-        android:visibility="invisible"/>
-
-    <ImageView
-        android:visibility="invisible"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/image_camera"/>
-
     <com.budiyev.android.codescanner.CodeScannerView
         android:id="@+id/scanner_view"
         android:layout_width="match_parent"
@@ -38,5 +22,13 @@
         app:frameSize="0.75"
         app:frameThickness="2dp"
         app:frameVerticalBias="0.5"
-        app:maskColor="#77000000" />
+        app:maskColor="#77000000"/>
+
+    <ImageView
+        android:visibility="invisible"
+        android:contentDescription="image"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/image_camera"/>
+
 </FrameLayout>

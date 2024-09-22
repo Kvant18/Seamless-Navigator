@@ -3,8 +3,15 @@ package org.domino.seamless.listener.items;
 import android.view.View;
 import android.widget.AdapterView;
 
-
 import com.google.android.material.search.SearchView;
+import com.yandex.mapkit.RequestPoint;
+import com.yandex.mapkit.RequestPointType;
+import com.yandex.mapkit.directions.DirectionsFactory;
+import com.yandex.mapkit.directions.driving.DrivingOptions;
+import com.yandex.mapkit.directions.driving.DrivingRouter;
+import com.yandex.mapkit.directions.driving.DrivingRouterType;
+import com.yandex.mapkit.directions.driving.VehicleOptions;
+import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.CompositeIcon;
 import com.yandex.mapkit.map.IconStyle;
@@ -16,6 +23,11 @@ import com.yandex.runtime.image.ImageProvider;
 
 import org.domino.seamless.Pin;
 import org.domino.seamless.R;
+import org.domino.seamless.listener.location.LocationObjectListener;
+import org.domino.seamless.listener.location.RoutesListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class OnItemClick implements AdapterView.OnItemClickListener {
     private final MapView mapView;
@@ -44,5 +56,17 @@ public final class OnItemClick implements AdapterView.OnItemClickListener {
         });
         searchView.hide();
         mapView.getMapWindow().getMap().move(new CameraPosition(pin.getPoint(), 14, 0,0));
+        List<RequestPoint> lists = new ArrayList<>();
+        Point point = LocationObjectListener.getInstance().getUserLocation();
+        //Toast.makeText(view.getContext(), String.valueOf(point.getLatitude()) + String.valueOf(point.getLongitude()), Toast.LENGTH_SHORT).show();
+        RequestPoint startPoint = new RequestPoint(LocationObjectListener.getInstance().getUserLocation(), RequestPointType.WAYPOINT, null, null);
+        RequestPoint endPoint = new RequestPoint(pin.getPoint(), RequestPointType.WAYPOINT, null, null);
+        lists.add(startPoint);
+        lists.add(endPoint);
+        DrivingOptions options = new DrivingOptions();
+        options.setRoutesCount(lists.size());
+        DrivingRouter drivingRouter = DirectionsFactory.getInstance().createDrivingRouter(DrivingRouterType.COMBINED);
+        final RoutesListener listener = new RoutesListener(mapView.getContext(), mapView);
+        drivingRouter.requestRoutes(lists, options, new VehicleOptions(), listener);
     }
 }

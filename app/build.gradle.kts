@@ -67,5 +67,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.code.scanner)
+    implementation(libs.maps.mobile.v480navikit)
+    implementation(libs.roadevents)
+    implementation(libs.automotivenavigation)
 }
 

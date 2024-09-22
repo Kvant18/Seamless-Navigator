@@ -13,6 +13,7 @@ import com.google.android.material.search.SearchView;
 import com.yandex.mapkit.MapKit;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
+import com.yandex.mapkit.location.LocationManager;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.mapkit.search.SearchFactory;
@@ -61,13 +62,17 @@ public class HomeFragment extends Fragment {
     }
 
     private void setLocation() {
+        LocationObjectListener locationObjectListener = LocationObjectListener.getInstance();
         mapView.getMapWindow().getMap().setRotateGesturesEnabled(false);
         mapView.getMapWindow().getMap().move(new CameraPosition(new Point(0, 0), 14, 0, 0));
         MapKit mapKit = MapKitFactory.getInstance();
         mapKit.resetLocationManagerToDefault();
+        LocationManager locationManager = mapKit.createLocationManager();
+        locationManager.requestSingleUpdate(locationObjectListener);
         final UserLocationLayer userLocationLayer = mapKit.createUserLocationLayer(mapView.getMapWindow());
+        locationObjectListener.set(userLocationLayer, mapView, getContext());
         userLocationLayer.setVisible(true);
         userLocationLayer.setHeadingEnabled(true);
-        userLocationLayer.setObjectListener(new LocationObjectListener(userLocationLayer, mapView, getContext()));
+        userLocationLayer.setObjectListener(locationObjectListener);
     }
 }
