@@ -4,39 +4,37 @@ package org.domino.seamless.listener.location;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PointF;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
+import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.geometry.Point;
-import com.yandex.mapkit.layers.ObjectEvent;
 import com.yandex.mapkit.location.Location;
-import com.yandex.mapkit.location.LocationListener;
-import com.yandex.mapkit.location.LocationStatus;
+import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.CompositeIcon;
 import com.yandex.mapkit.map.IconStyle;
-import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.map.RotationType;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.mapkit.user_location.UserLocationLayer;
-import com.yandex.mapkit.user_location.UserLocationObjectListener;
 import com.yandex.mapkit.user_location.UserLocationView;
 import com.yandex.runtime.image.ImageProvider;
 
 import org.domino.seamless.R;
 
-public final class LocationObjectListener implements UserLocationObjectListener, LocationListener {
-    private final static LocationObjectListener instance = new LocationObjectListener();
-    private UserLocationLayer userLocationLayer;
-    private MapView mapView;
-    private Context context;
+public final class LocationUserPin extends LocationAbstraction {
+    private final UserLocationLayer userLocationLayer;
+    private final MapView mapView;
+    private final Context context;
 
-    private Point userLocation;
-
+    public LocationUserPin(UserLocationLayer layer, MapView mapView, Context context) {
+        this.userLocationLayer = layer;
+        this.mapView = mapView;
+        this.context = context;
+    }
 
     @Override
     public void onObjectAdded(UserLocationView userLocationView) {
+        //final CameraPosition cameraPosition = new CameraPosition(userLocationView.getPin().getGeometry(), 14f, 0, 0);
+        //this.mapView.getMapWindow().getMap().move(cameraPosition, new Animation(Animation.Type.LINEAR, 1f), null);
         userLocationLayer.setAnchor(
                 new PointF((float) (mapView.getWidth() * 0.5), (float) (mapView.getHeight() * 0.5)),
                 new PointF((float) (mapView.getWidth() * 0.5), (float) (mapView.getHeight() * 0.83)));
@@ -63,37 +61,5 @@ public final class LocationObjectListener implements UserLocationObjectListener,
         );
 
         userLocationView.getAccuracyCircle().setFillColor(Color.GRAY & 0x99ffffff);
-    }
-
-    @Override
-    public void onObjectRemoved(UserLocationView userLocationView) {}
-
-    @Override
-    public void onObjectUpdated(UserLocationView userLocationView, ObjectEvent objectEvent) {}
-
-    public Point getUserLocation() {
-        return userLocation;
-    }
-
-    public void set(UserLocationLayer layer, MapView mapView, Context context) {
-        this.userLocationLayer = layer;
-        this.mapView = mapView;
-        this.context = context;
-    }
-
-    public static LocationObjectListener getInstance() {
-        return instance;
-    }
-
-    @Override
-    public void onLocationUpdated(Location location) {
-        this.userLocation = location.getPosition();
-        //Point point = location.getPosition();
-        //Toast.makeText(mapView.getContext(), String.valueOf(point.getLongitude()) + " " + String.valueOf(point.getLatitude()), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onLocationStatusUpdated(LocationStatus locationStatus) {
-
     }
 }

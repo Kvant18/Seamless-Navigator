@@ -3,6 +3,8 @@ package org.domino.seamless.listener.items;
 import android.view.View;
 import android.widget.AdapterView;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.material.search.SearchView;
 import com.yandex.mapkit.RequestPoint;
 import com.yandex.mapkit.RequestPointType;
@@ -23,8 +25,9 @@ import com.yandex.runtime.image.ImageProvider;
 
 import org.domino.seamless.Pin;
 import org.domino.seamless.R;
-import org.domino.seamless.listener.location.LocationObjectListener;
+import org.domino.seamless.listener.location.LocationUserPin;
 import org.domino.seamless.listener.location.RoutesListener;
+import org.domino.seamless.listener.location.UserLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +36,13 @@ public final class OnItemClick implements AdapterView.OnItemClickListener {
     private final MapView mapView;
     private final ImageProvider provider;
     private final SearchView searchView;
+    private final DrivingRouter drivingRouter;
 
     public OnItemClick(MapView mapView, SearchView searchView) {
         this.mapView = mapView;
         this.provider = ImageProvider.fromResource(mapView.getContext(), R.drawable.location_pin, true);
         this.searchView = searchView;
+        this.drivingRouter = DirectionsFactory.getInstance().createDrivingRouter(DrivingRouterType.COMBINED);
     }
 
     @Override
@@ -54,19 +59,25 @@ public final class OnItemClick implements AdapterView.OnItemClickListener {
                    .setRotationType(RotationType.ROTATE)
                    .setScale(0.07f));
         });
-        searchView.hide();
         mapView.getMapWindow().getMap().move(new CameraPosition(pin.getPoint(), 14, 0,0));
-        List<RequestPoint> lists = new ArrayList<>();
-        Point point = LocationObjectListener.getInstance().getUserLocation();
-        //Toast.makeText(view.getContext(), String.valueOf(point.getLatitude()) + String.valueOf(point.getLongitude()), Toast.LENGTH_SHORT).show();
-        RequestPoint startPoint = new RequestPoint(LocationObjectListener.getInstance().getUserLocation(), RequestPointType.WAYPOINT, null, null);
-        RequestPoint endPoint = new RequestPoint(pin.getPoint(), RequestPointType.WAYPOINT, null, null);
-        lists.add(startPoint);
-        lists.add(endPoint);
-        DrivingOptions options = new DrivingOptions();
+        GeneratingRoutes(pin);
+        searchView.hide();
+    }
+
+    private void GeneratingRoutes(Pin pin) {
+        final List<RequestPoint> lists = getRequestPoints(pin);
+        final DrivingOptions options = new DrivingOptions();
         options.setRoutesCount(lists.size());
-        DrivingRouter drivingRouter = DirectionsFactory.getInstance().createDrivingRouter(DrivingRouterType.COMBINED);
-        final RoutesListener listener = new RoutesListener(mapView.getContext(), mapView);
-        drivingRouter.requestRoutes(lists, options, new VehicleOptions(), listener);
+
+        drivingRouter.requestRoutes(lists, options, new VehicleOptions(), RoutesListener.getInstance());
+
+    }
+
+    private static List<RequestPoint> getRequestPoints(Pin pin) {
+        List<RequestPoint> lists = new ArrayList<>();
+        Point point = UserLocation.getInstance().getUserLocation();
+        lists.add(new RequestPoint(point, RequestPointType.WAYPOINT, null, null));
+        lists.add(new RequestPoint(pin.getPoint(), RequestPointType.WAYPOINT, null, null));
+        return lists;
     }
 }

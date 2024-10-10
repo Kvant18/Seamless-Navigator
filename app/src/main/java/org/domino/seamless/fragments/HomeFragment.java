@@ -9,10 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.search.SearchView;
+import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKit;
 import com.yandex.mapkit.MapKitFactory;
-import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.location.LocationManager;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.mapview.MapView;
@@ -22,18 +23,38 @@ import com.yandex.mapkit.search.SearchManagerType;
 import com.yandex.mapkit.user_location.UserLocationLayer;
 
 import org.domino.seamless.listener.items.OnItemClick;
-import org.domino.seamless.listener.location.LocationObjectListener;
+import org.domino.seamless.listener.location.LocationUserPin;
 import org.domino.seamless.R;
+import org.domino.seamless.listener.location.RoutesListener;
+import org.domino.seamless.listener.location.UserLocation;
 import org.domino.seamless.search.SearchWatcher;
 
 public class HomeFragment extends Fragment {
+    private static final float factor = 1.2f;
     private MapView mapView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_home, container, false);
         final SearchManager searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.COMBINED);
+        final FloatingActionButton zoomIn = root.findViewById(R.id.fabZoomIn);
+        final FloatingActionButton zoomOut = root.findViewById(R.id.fabZoomOut);
+
+        zoomOut.setOnClickListener(view -> {
+            CameraPosition cameraPosition = mapView.getMapWindow().getMap().getCameraPosition();
+            CameraPosition newPosition = new CameraPosition(cameraPosition.getTarget(), cameraPosition.getZoom() - factor, cameraPosition.getAzimuth(), cameraPosition.getTilt());
+            mapView.getMapWindow().getMap().move(newPosition, new Animation(Animation.Type.SMOOTH, 0.25f), null);
+        });
+
+        zoomIn.setOnClickListener(view -> {
+            CameraPosition cameraPosition = mapView.getMapWindow().getMap().getCameraPosition();
+            CameraPosition newPosition = new CameraPosition(cameraPosition.getTarget(), cameraPosition.getZoom() + factor, cameraPosition.getAzimuth(), cameraPosition.getTilt());
+            mapView.getMapWindow().getMap().move(newPosition, new Animation(Animation.Type.SMOOTH, 0.25f), null);
+        });
+
         mapView = root.findViewById(R.id.mapview);
+
+        RoutesListener.getInstance().set(getContext(), mapView);
 
         setLocation();
 
@@ -46,6 +67,7 @@ public class HomeFragment extends Fragment {
 
         return root;
     }
+
 
     @Override
     public void onStop() {
@@ -62,17 +84,20 @@ public class HomeFragment extends Fragment {
     }
 
     private void setLocation() {
-        LocationObjectListener locationObjectListener = LocationObjectListener.getInstance();
-        mapView.getMapWindow().getMap().setRotateGesturesEnabled(false);
-        mapView.getMapWindow().getMap().move(new CameraPosition(new Point(0, 0), 14, 0, 0));
-        MapKit mapKit = MapKitFactory.getInstance();
-        mapKit.resetLocationManagerToDefault();
-        LocationManager locationManager = mapKit.createLocationManager();
-        locationManager.requestSingleUpdate(locationObjectListener);
+        mapView.getMapWindow().getMap().setRotateGesturesEnabled(true);
+        //mapView.getMapWindow().getMap().move(new CameraPosition(new Point(0, 0), 20, 0, 0), new Animation(Animation.Type.LINEAR, 1f), null);
+
+        final MapKit mapKit = MapKitFactory.getInstance();
         final UserLocationLayer userLocationLayer = mapKit.createUserLocationLayer(mapView.getMapWindow());
-        locationObjectListener.set(userLocationLayer, mapView, getContext());
+        final LocationUserPin locationUserPin = new LocationUserPin(userLocationLayer, mapView, getContext());
+
+        mapKit.resetLocationManagerToDefault();
+
+        final LocationManager locationManager = mapKit.createLocationManager();
+        locationManager.requestSingleUpdate(UserLocation.getInstance());
+
         userLocationLayer.setVisible(true);
         userLocationLayer.setHeadingEnabled(true);
-        userLocationLayer.setObjectListener(locationObjectListener);
+        userLocationLayer.setObjectListener(locationUserPin);
     }
 }
