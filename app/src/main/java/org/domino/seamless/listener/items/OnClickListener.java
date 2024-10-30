@@ -1,9 +1,10 @@
 package org.domino.seamless.listener.items;
 
-import android.view.View;
-import android.widget.AdapterView;
+
+import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.search.SearchView;
 import com.yandex.mapkit.RequestPoint;
@@ -25,43 +26,27 @@ import com.yandex.runtime.image.ImageProvider;
 
 import org.domino.seamless.Pin;
 import org.domino.seamless.R;
-import org.domino.seamless.listener.location.LocationUserPin;
 import org.domino.seamless.listener.location.RoutesListener;
 import org.domino.seamless.listener.location.UserLocation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public final class OnItemClick implements AdapterView.OnItemClickListener {
-    private final MapView mapView;
-    private final ImageProvider provider;
-    private final SearchView searchView;
-    private final DrivingRouter drivingRouter;
+public final class OnClickListener {
+    private static final OnClickListener instance = new OnClickListener();
+    private static final DrivingRouter drivingRouter = DirectionsFactory.getInstance().createDrivingRouter(DrivingRouterType.COMBINED);
+    private MapView mapView;
+    private ImageProvider provider;
+    private SearchView searchView;
 
-    public OnItemClick(MapView mapView, SearchView searchView) {
-        this.mapView = mapView;
-        this.provider = ImageProvider.fromResource(mapView.getContext(), R.drawable.location_pin, true);
-        this.searchView = searchView;
-        this.drivingRouter = DirectionsFactory.getInstance().createDrivingRouter(DrivingRouterType.COMBINED);
+    public static OnClickListener getInstance() {
+        return instance;
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Pin pin = (Pin) adapterView.getItemAtPosition(i);
-        MapObjectCollection mapObjects = mapView.getMapWindow().getMap().getMapObjects();
-        mapObjects.clear();
-        mapObjects.addPlacemark(placemark -> {
-           placemark.setGeometry(pin.getPoint());
-           placemark.setText(pin.getName(), new TextStyle().setSize(10f).setPlacement(TextStyle.Placement.RIGHT));
-           final CompositeIcon icon = placemark.useCompositeIcon();
-           icon.setIcon("pin", this.provider, new IconStyle()
-                   .setZIndex(1f)
-                   .setRotationType(RotationType.ROTATE)
-                   .setScale(0.07f));
-        });
-        mapView.getMapWindow().getMap().move(new CameraPosition(pin.getPoint(), 14, 0,0));
-        GeneratingRoutes(pin);
-        searchView.hide();
+    public void init(MapView mapView, SearchView searchView) {
+        this.provider = ImageProvider.fromResource(mapView.getContext(), R.drawable.location_pin, true);
+        this.mapView = mapView;
+        this.searchView = searchView;
     }
 
     private void GeneratingRoutes(Pin pin) {
@@ -70,7 +55,6 @@ public final class OnItemClick implements AdapterView.OnItemClickListener {
         options.setRoutesCount(lists.size());
 
         drivingRouter.requestRoutes(lists, options, new VehicleOptions(), RoutesListener.getInstance());
-
     }
 
     private static List<RequestPoint> getRequestPoints(Pin pin) {
@@ -79,5 +63,22 @@ public final class OnItemClick implements AdapterView.OnItemClickListener {
         lists.add(new RequestPoint(point, RequestPointType.WAYPOINT, null, null));
         lists.add(new RequestPoint(pin.getPoint(), RequestPointType.WAYPOINT, null, null));
         return lists;
+    }
+
+    public void onClick(Pin pin) {
+        MapObjectCollection mapObjects = mapView.getMapWindow().getMap().getMapObjects();
+        mapObjects.clear();
+        mapObjects.addPlacemark(placemark -> {
+            placemark.setGeometry(pin.getPoint());
+            placemark.setText(pin.getName(), new TextStyle().setSize(10f).setPlacement(TextStyle.Placement.RIGHT));
+            final CompositeIcon icon = placemark.useCompositeIcon();
+            icon.setIcon("pin", this.provider, new IconStyle()
+                    .setZIndex(1f)
+                    .setRotationType(RotationType.ROTATE)
+                    .setScale(0.07f));
+        });
+        mapView.getMapWindow().getMap().move(new CameraPosition(pin.getPoint(), 14, 0,0));
+        GeneratingRoutes(pin);
+        searchView.hide();
     }
 }

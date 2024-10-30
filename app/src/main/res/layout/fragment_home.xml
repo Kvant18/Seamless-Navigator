@@ -71,9 +71,10 @@
                 android:hint="@string/SearchHint"
                 app:layout_anchor="@id/search_bar">
 
-                <ListView android:id="@+id/list_item_view"
+                <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recycler_view_pins"/>
 
             </com.google.android.material.search.SearchView>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

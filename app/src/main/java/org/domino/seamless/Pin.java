@@ -2,7 +2,9 @@ package org.domino.seamless;
 
 import com.yandex.mapkit.geometry.Point;
 
-public final class Pin {
+import java.io.Serializable;
+
+public final class Pin implements Serializable {
     private final String name;
     private final String description;
     private final Point point;
