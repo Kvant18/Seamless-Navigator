@@ -1,14 +1,9 @@
 package org.domino.seamless.listener.location;
 
-
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PointF;
 
-import com.yandex.mapkit.Animation;
-import com.yandex.mapkit.geometry.Point;
-import com.yandex.mapkit.location.Location;
-import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.CompositeIcon;
 import com.yandex.mapkit.map.IconStyle;
 import com.yandex.mapkit.map.PlacemarkMapObject;
@@ -25,7 +20,7 @@ public final class LocationUserPin extends LocationAbstraction {
     private final MapView mapView;
     private final Context context;
 
-    public LocationUserPin(UserLocationLayer layer, MapView mapView, Context context) {
+    public LocationUserPin(final UserLocationLayer layer, final MapView mapView, final Context context) {
         this.userLocationLayer = layer;
         this.mapView = mapView;
         this.context = context;
@@ -33,8 +28,6 @@ public final class LocationUserPin extends LocationAbstraction {
 
     @Override
     public void onObjectAdded(UserLocationView userLocationView) {
-        //final CameraPosition cameraPosition = new CameraPosition(userLocationView.getPin().getGeometry(), 14f, 0, 0);
-        //this.mapView.getMapWindow().getMap().move(cameraPosition, new Animation(Animation.Type.LINEAR, 1f), null);
         userLocationLayer.setAnchor(
                 new PointF((float) (mapView.getWidth() * 0.5), (float) (mapView.getHeight() * 0.5)),
                 new PointF((float) (mapView.getWidth() * 0.5), (float) (mapView.getHeight() * 0.83)));

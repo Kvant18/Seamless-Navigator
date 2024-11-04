@@ -19,4 +19,7 @@
     <string name="always_dark">Всегда темная</string>
     <string name="always_light">Всегда светлая</string>
     <string name="back">Назад</string>
+    <string name="fromName">Откуда:</string>
+    <string name="toName">Куда:</string>
+    <string name="your_positon">Ваше местоположение</string>
 </resources>

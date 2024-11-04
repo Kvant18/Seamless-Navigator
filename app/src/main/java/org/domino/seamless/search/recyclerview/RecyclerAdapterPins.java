@@ -3,11 +3,8 @@ package org.domino.seamless.search.recyclerview;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.textview.MaterialTextView;
 
 import org.domino.seamless.Pin;
 import org.domino.seamless.R;
@@ -32,10 +29,7 @@ public final class RecyclerAdapterPins extends RecyclerView.Adapter<PinsHolder> 
     @Override
     public void onBindViewHolder(PinsHolder holder, int position) {
         final Pin pin = this.pins.get(position);
-        holder.desc.setText(pin.getDescription());
-        holder.icon.setImageResource(pin.getIcon());
-        holder.name.setText(pin.getName());
-        holder.pin = pin;
+        holder.setPin(pin);
     }
 
     @Override

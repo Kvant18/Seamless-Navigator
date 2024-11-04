@@ -4,8 +4,6 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.ListView;
-
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +19,7 @@ public final class SearchWatcher implements TextWatcher {
     private final SearchManager searchManager;
     private final MapView mapView;
 
-    public SearchWatcher(RecyclerView suggestResultView, SearchManager searchManager, Context context, MapView mapView) {
+    public SearchWatcher(final RecyclerView suggestResultView, final SearchManager searchManager, final Context context, final MapView mapView) {
         this.suggestResultView = suggestResultView;
         this.context = context;
         this.searchManager = searchManager;
@@ -39,7 +37,7 @@ public final class SearchWatcher implements TextWatcher {
         requestSuggest(editable.toString());
     }
 
-    private void requestSuggest(String query) {
+    private void requestSuggest(final String query) {
         final Geometry visibleRegion = VisibleRegionUtils.toPolygon(mapView.getMapWindow().getMap().getVisibleRegion());
         searchManager.submit(query, visibleRegion, new SearchOptions(), new Search(suggestResultView, context));
         suggestResultView.setVisibility(View.INVISIBLE);

@@ -1,5 +1,6 @@
 package org.domino.seamless.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -26,13 +27,11 @@ import com.yandex.mapkit.user_location.UserLocationLayer;
 import org.domino.seamless.listener.items.OnClickListener;
 import org.domino.seamless.listener.location.LocationUserPin;
 import org.domino.seamless.R;
-import org.domino.seamless.listener.location.RoutesListener;
 import org.domino.seamless.listener.location.UserLocation;
+import org.domino.seamless.routes.generating.RoutersGenerator;
 import org.domino.seamless.search.SearchWatcher;
 
-import kotlin.Function;
-
-public class HomeFragment extends Fragment {
+public final class HomeFragment extends Fragment {
     private static final float factor = 1.2f;
     private MapView mapView;
 
@@ -43,34 +42,21 @@ public class HomeFragment extends Fragment {
         final FloatingActionButton zoomIn = root.findViewById(R.id.fabZoomIn);
         final FloatingActionButton zoomOut = root.findViewById(R.id.fabZoomOut);
 
-        zoomOut.setOnClickListener(view -> {
-            CameraPosition cameraPosition = mapView.getMapWindow().getMap().getCameraPosition();
-            CameraPosition newPosition = new CameraPosition(cameraPosition.getTarget(), cameraPosition.getZoom() * factor, cameraPosition.getAzimuth(), cameraPosition.getTilt());
-            mapView.getMapWindow().getMap().move(newPosition, new Animation(Animation.Type.SMOOTH, 0.25f), null);
-        });
-
-        zoomIn.setOnClickListener(view -> {
-            CameraPosition cameraPosition = mapView.getMapWindow().getMap().getCameraPosition();
-            CameraPosition newPosition = new CameraPosition(cameraPosition.getTarget(), cameraPosition.getZoom() / factor, cameraPosition.getAzimuth(), cameraPosition.getTilt());
-            mapView.getMapWindow().getMap().move(newPosition, new Animation(Animation.Type.SMOOTH, 0.25f), null);
-        });
-
         mapView = root.findViewById(R.id.mapview);
 
-        RoutesListener.getInstance().set(getContext(), mapView);
-
-        setLocation();
+        setLocation(mapView, getContext());
+        fabinit(zoomOut, zoomIn, mapView);
 
         final RecyclerView listView = root.findViewById(R.id.recycler_view_pins);
         listView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         final SearchView searchView = root.findViewById(R.id.search_view_item);
         OnClickListener.getInstance().init(mapView, searchView);
+        RoutersGenerator.getInstance().init(root.findViewById(R.id.search_bar_view), root.findViewById(R.id.recycler_result), mapView);
         searchView.getEditText().addTextChangedListener(new SearchWatcher(listView, searchManager, getContext(), mapView));
 
         return root;
     }
-
 
     @Override
     public void onStop() {
@@ -86,14 +72,12 @@ public class HomeFragment extends Fragment {
         mapView.onStart();
     }
 
-    private void setLocation() {
+    private static void setLocation(final MapView mapView, final Context context) {
         mapView.getMapWindow().getMap().setRotateGesturesEnabled(true);
 
         final MapKit mapKit = MapKitFactory.getInstance();
         final UserLocationLayer userLocationLayer = mapKit.createUserLocationLayer(mapView.getMapWindow());
-        final LocationUserPin locationUserPin = new LocationUserPin(userLocationLayer, mapView, getContext());
-
-        mapKit.resetLocationManagerToDefault();
+        final LocationUserPin locationUserPin = new LocationUserPin(userLocationLayer, mapView, context);
 
         final LocationManager locationManager = mapKit.createLocationManager();
         locationManager.requestSingleUpdate(UserLocation.getInstance());
@@ -101,5 +85,19 @@ public class HomeFragment extends Fragment {
         userLocationLayer.setVisible(true);
         userLocationLayer.setHeadingEnabled(false);
         userLocationLayer.setObjectListener(locationUserPin);
+    }
+
+    private static void fabinit(final FloatingActionButton zoomOut, final FloatingActionButton zoomIn, final MapView mapView) {
+        zoomOut.setOnClickListener(view -> {
+            CameraPosition cameraPosition = mapView.getMapWindow().getMap().getCameraPosition();
+            CameraPosition newPosition = new CameraPosition(cameraPosition.getTarget(), cameraPosition.getZoom() / factor, cameraPosition.getAzimuth(), cameraPosition.getTilt());
+            mapView.getMapWindow().getMap().move(newPosition, new Animation(Animation.Type.LINEAR, 0.25f), null);
+        });
+
+        zoomIn.setOnClickListener(view -> {
+            CameraPosition cameraPosition = mapView.getMapWindow().getMap().getCameraPosition();
+            CameraPosition newPosition = new CameraPosition(cameraPosition.getTarget(), cameraPosition.getZoom() * factor, cameraPosition.getAzimuth(), cameraPosition.getTilt());
+            mapView.getMapWindow().getMap().move(newPosition, new Animation(Animation.Type.LINEAR, 0.25f), null);
+        });
     }
 }

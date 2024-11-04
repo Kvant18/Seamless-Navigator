@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_routes_list"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/fabLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/back_to_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:fabSize="mini"
+                android:contentDescription="TODO"
+                android:src="@drawable/back_arrow" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/ToFromLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/fabLayout"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RelativeLayout
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/routes_list_from_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:gravity="center"
+                    android:text="@string/fromName"
+                    android:textSize="6.5pt"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/routes_list_from"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/routes_list_from_name"
+                    android:gravity="center"
+                    android:textSize="6.5pt"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/routes_list_to_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/routes_list_from"
+                    android:layout_marginEnd="5dp"
+                    android:gravity="center"
+                    android:text="@string/toName"
+                    android:textSize="6.5pt"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/routes_list_to"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/routes_list_from"
+                    android:layout_toEndOf="@id/routes_list_to_name"
+                    android:gravity="center"
+                    android:textSize="6.5pt"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.divider.MaterialDivider
+        app:dividerInsetEnd="16dp"
+        app:dividerInsetStart="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+</LinearLayout>

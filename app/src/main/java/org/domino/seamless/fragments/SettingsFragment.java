@@ -9,8 +9,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import org.domino.seamless.R;
 
-
-public class SettingsFragment extends PreferenceFragmentCompat {
+public final class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

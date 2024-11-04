@@ -27,7 +27,7 @@ public final class Search implements Session.SearchListener {
     private final RecyclerView suggestResultView;
     private final Context context;
 
-    public Search(RecyclerView suggestResultView, Context context) {
+    public Search(final RecyclerView suggestResultView, final Context context) {
         this.suggestResultView = suggestResultView;
         this.context = context;
         this.pins = new ArrayList<>();
