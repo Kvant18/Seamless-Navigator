@@ -84,7 +84,7 @@ public final class RoutersGenerator {
     private View.OnClickListener removeRoutes() {
         return v -> {
             mapView.getMapWindow().getMap().getMapObjects().clear();
-            this.searchBarView.setVisibility(View.VISIBLE);
+            searchBarView.setVisibility(View.VISIBLE);
             routesView.removeAllViews();
         };
     }

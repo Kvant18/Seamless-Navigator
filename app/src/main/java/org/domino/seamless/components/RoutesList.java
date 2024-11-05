@@ -1,33 +1,24 @@
 package org.domino.seamless.components;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.ColorFilter;
-import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.shape.AbsoluteCornerSize;
-import com.google.android.material.shape.AdjustedCornerSize;
-import com.google.android.material.shape.ClampedCornerSize;
-import com.google.android.material.shape.CornerSize;
-import com.google.android.material.shape.EdgeTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.RelativeCornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.textview.MaterialTextView;
 import com.yandex.mapkit.mapview.MapView;
 
 import org.domino.seamless.R;
 import org.domino.seamless.routes.Route;
-import org.domino.seamless.routes.RouteType;
 import org.domino.seamless.routes.recyclerview.RoutesView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public final class RoutesList extends LinearLayout {
@@ -58,11 +49,14 @@ public final class RoutesList extends LinearLayout {
 
     public RoutesList(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        final Animation fade = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in);
+        fade.setInterpolator(new DecelerateInterpolator());
         LayoutInflater.from(context).inflate(R.layout.routes_list, this);
         MaterialShapeDrawable shape = MaterialShapeDrawable.createWithElevationOverlay(getContext());
         ShapeAppearanceModel appearanceModel = ShapeAppearanceModel.builder().setTopRightCornerSize(60f).setTopLeftCornerSize(60f).build();
         shape.setShapeAppearanceModel(appearanceModel);
-        setBackground(shape);
+        this.setBackground(shape);
+        this.startAnimation(fade);
     }
 
 }
