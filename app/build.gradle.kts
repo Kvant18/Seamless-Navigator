@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.maps.mobile)
     implementation(libs.androidx.preference)
     implementation(libs.play.services.location)
+    implementation(libs.roadevents.v481)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)

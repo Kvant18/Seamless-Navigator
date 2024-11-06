@@ -67,18 +67,26 @@ public final class RoutersGenerator {
     public void AddingDrivingRoute(final DrivingRoute route) {
         final com.yandex.mapkit.directions.driving.Weight metadata = route.getMetadata().getWeight();
         routes.add(new Route(RouteType.DRIVING, metadata.getTime().getText(), metadata.getDistance().getText(), route.getGeometry(), this.pin.getPoint()));
+        checkAllGenerated();
     }
 
     public void AddingBicycleRoute(final com.yandex.mapkit.transport.masstransit.Route route) {
         final Weight metadata = route.getMetadata().getWeight();
         routes.add(new Route(RouteType.BICYCLE, metadata.getTime().getText(), metadata.getWalkingDistance().getText(), route.getGeometry(), this.pin.getPoint()));
+        checkAllGenerated();
     }
 
     public void AddingPedestrianRoute(final com.yandex.mapkit.transport.masstransit.Route route) {
         final Weight metadata = route.getMetadata().getWeight();
         routes.add(new Route(RouteType.WALKING, metadata.getTime().getText(), metadata.getWalkingDistance().getText(), route.getGeometry(), this.pin.getPoint()));
-        routesView.addView(new RoutesList(context, routes, context.getString(R.string.your_positon), pin.getName(), mapView, removeRoutes()));
-        searchBarView.setVisibility(View.INVISIBLE);
+        checkAllGenerated();
+    }
+
+    private void checkAllGenerated() {
+        if(routes.size() == 3) {
+            routesView.addView(new RoutesList(context, routes, context.getString(R.string.your_positon), pin.getName(), mapView, removeRoutes()));
+            searchBarView.setVisibility(View.INVISIBLE);
+        }
     }
 
     private View.OnClickListener removeRoutes() {

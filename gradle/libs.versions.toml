@@ -5,14 +5,15 @@ codeScanner = "2.3.0"
 composeBom = "2024.10.01"
 appcompat = "1.7.0"
 mapsMobile = "4.8.0-full"
-mapsMobileVersion = "4.8.0-navikit"
+mapsMobileVersion = "4.8.1-navikit"
 material = "1.12.0"
 activity = "1.9.3"
 constraintlayout = "2.2.0"
 material3 = "latest"
-playServicesLocation = "21.3.0"
+playServicesLocation = "21.0.1"
 preference = "1.2.1"
 roadevents = "4.8.0"
+roadeventsVersion = "4.8.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
@@ -32,6 +33,7 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 roadevents = { module = "com.yandex.mapkit.styling:roadevents", version.ref = "roadevents" }
+roadevents-v481 = { module = "com.yandex.mapkit.styling:roadevents", version.ref = "roadeventsVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

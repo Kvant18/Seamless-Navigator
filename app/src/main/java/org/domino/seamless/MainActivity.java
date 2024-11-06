@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.color.DynamicColors;
 import com.yandex.mapkit.MapKitFactory;
 
 import org.domino.seamless.databinding.MainActivityBinding;
@@ -30,18 +29,17 @@ public final class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MapKitFactory.setApiKey(BuildConfig.MAPKIT_API_KEY);
         super.onCreate(savedInstanceState);
         final SharedPreferences preferences = getSharedPreferences(getString(R.string.configName), Context.MODE_PRIVATE);
         final String locale = preferences.getString(getString(R.string.language_key), "ru");
         setAppLanguage(locale, getResources());
 
-        final MainActivityBinding binding = MainActivityBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        MapKitFactory.initialize(this);
         requestLocationPermission(this);
         requestCameraPermission(this);
+
+        MapKitFactory.initialize(this);
+        final MainActivityBinding binding = MainActivityBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         replaceFragment(new HomeFragment());
 

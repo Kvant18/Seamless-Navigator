@@ -8,6 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -35,7 +36,7 @@ public final class RoutesList extends LinearLayout {
         final FloatingActionButton fab = findViewById(R.id.back_to_search);
         fab.setOnClickListener(clickListener);
 
-        final LinearLayout layout = findViewById(R.id.root_routes_list);
+        final RelativeLayout layout = findViewById(R.id.recycler_view_result);
         layout.addView(new RoutesRecycler(getContext(), new RoutesView(routes, mapView)));
     }
 
